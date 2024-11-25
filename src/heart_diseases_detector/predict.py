@@ -8,4 +8,5 @@ bp = Blueprint('predict', __name__, url_prefix='/')
 
 @bp.route('/predict', methods=['POST'])
 def predict():
+    print(request.get_json())
     return render_template('heart/result.html')

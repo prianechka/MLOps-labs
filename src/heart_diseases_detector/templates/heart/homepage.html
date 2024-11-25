@@ -112,7 +112,7 @@
     <form>
         <div class="mb-5" style="margin-bottom: 2rem;">
             <label for="gender" style="font-size: large">Тип талассемии</label>
-            <select class="form-select form-select-lg" style="font-size: large;" id="thai">
+            <select class="form-select form-select-lg" style="font-size: large;" id="thal">
                 <option>Нормальный</option>
                 <option>Исправленный дефект</option>
                 <option>Обратимый дефект</option>
@@ -120,7 +120,60 @@
         </div>
     </form>
 
-    <form action="http://localhost:5000/predict" method="post">
+    <script>
+        function submitForm() {
+            // Получаем значения элементов формы
+            const age = document.getElementById('age').value;
+            const sex = document.getElementById('sex').value;
+            const cp = document.getElementById('cp').value;
+            const trestbps = document.getElementById('trestbps').value;
+            const chol = document.getElementById('chol').value;
+            const fbs = document.getElementById('fbs').value;
+            const restecg = document.getElementById('restecg').value;
+            const thalach = document.getElementById('thalach').value;
+            const exang = document.getElementById('exang').value;
+            const oldpeak = document.getElementById('oldpeak').value;
+            const slope = document.getElementById('slope').value;
+            const ca = document.getElementById('ca').value;
+            const thal = document.getElementById('thal').value;
+
+            
+            // Создаем объект с данными формы
+            const formData = {
+                age,
+                sex,
+                cp,
+                trestbps,
+                chol,
+                fbs,
+                restecg,
+                thalach,
+                exang,
+                oldpeak,
+                slope,
+                ca,
+                thal
+            };
+
+            fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then((response) => {
+                return response.text();
+            })
+            .then((html) => {
+                document.body.innerHTML = html     
+            });
+            
+            event.preventDefault();
+        }
+    </script>
+
+    <form method="post" onsubmit="submitForm(this)">
         <button type="submit" style="font-size: large" class="btn btn-primary">Узнать результаты</button>
     </form>
 </div>

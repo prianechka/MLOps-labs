@@ -1,0 +1,127 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Сердечные заболевания{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center">Узнайте, в группе ли вы риска сердечных заболеваний?</h1>
+    <h3 class="text-center mt-3">Введите свои показатели в формах ниже:</h3>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Пол</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="sex">
+                <option>Мужской</option>
+                <option>Женский</option>
+            </select>
+        </div>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="age" style="font-size: large;">Возраст</label>
+            <input type="number" class="form-control form-control-lg" style="font-size: large;" id="age" min="0" max="100">
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="me-3" style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="resting-blood-pressure">Давление в покое (мм рт. ст.)</label>
+            <input style="font-size: large;"  type="number" class="form-control form-control-lg" id="trestbps" min="0" max="250">
+        </div>
+        <div style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="max-pulse">Максимальный пульс (уд/мин)</label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="thalach" min="0" max="200">
+        </div>
+    </div>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Тип болей в груди</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="cp">
+                <option>Отсутствуют</option>
+                <option>Типичная стенокардия</option>
+                <option>Атипичная стенокардия</option>
+                <option>Боли, не связанные с стенокардией</option>
+            </select>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="me-3" style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="resting-blood-pressure">Уровень сывороточного холестерина (в мг/дл) </label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="chol" min="0" max="500">
+        </div>
+        <div style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="max-pulse">Уровень сахара в крови натощак (в мг/дл)</label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="fbs" min="0" max="200">
+        </div>
+    </div>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Результаты ЭКГ в покое</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="restecg">
+                <option>В норме</option>
+                <option>Аномалия зубца ST-T</option>
+                <option>Гипертрофия левого желудочка</option>
+                <option>Другое</option>
+            </select>
+        </div>
+    </form>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Выявляется ли стенокардия при нагрузке</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="exang">
+                <option>Нет</option>
+                <option>Да</option>
+            </select>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="me-3" style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="resting-blood-pressure">Уровень депрессии ST-сегмента после физической нагрузки</label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="oldpeak" min="0" max="500">
+        </div>
+    </div>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Наклон ST-сегмента при максимальной физической нагрузке</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="slope">
+                <option>Ровный</option>
+                <option>Наклон вверх</option>
+                <option>Наклон вниз</option>
+            </select>
+        </div>
+    </form>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Количество крупных сосудов, выявленных при рентгеноскопии</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="ca">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+        </div>
+    </form>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Тип талассемии</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="thai">
+                <option>Нормальный</option>
+                <option>Исправленный дефект</option>
+                <option>Обратимый дефект</option>
+            </select>
+        </div>
+    </form>
+
+    <form action="http://localhost:5000/predict" method="post">
+        <button type="submit" style="font-size: large" class="btn btn-primary">Узнать результаты</button>
+    </form>
+</div>
+{% endblock %}

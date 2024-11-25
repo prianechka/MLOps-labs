@@ -1,0 +1,21 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Сердечные заболевания{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Ваш результат:</h1>
+    {% if risk %}
+    <h3 class="text-center mt-3">К сожалению, вы в группе риска...</h3>
+    {% else %}
+    <h3 class="text-center mt-3">Поздравляем, вы вне группы риска!</h3>
+    {% endif %}
+
+    <div class="container mt-5">
+        <form action="http://localhost:5000/" method="get">
+            <button type="submit" style="font-size: large" class="btn btn-primary">Вернуться в начало</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

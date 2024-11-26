@@ -114,14 +114,14 @@ def _validate_input(req: dict) -> [bool, Response]:
 
     if not is_all_columns_in_request:
         return False, Response(
-            "В запросе отправлены не все колонки",
+            render_template('heart/bad_params.html', text_error='Были отправлены не все параметры'),
             status=400,
         )
     
     is_all_fields_correct, err_msg = _validate_all_params(req)
     if not is_all_fields_correct:
         return False, Response(
-            err_msg,
+            render_template('heart/bad_params.html', text_error=err_msg),
             status=400
         )
 

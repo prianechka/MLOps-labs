@@ -1,8 +1,9 @@
 import functools
 
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, Response
+from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, Response, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 from heart_diseases_detector.db import get_db
+import uuid
 
 bp = Blueprint('predict', __name__, url_prefix='/')
 
@@ -79,40 +80,30 @@ PARAMS_DICT = {
     ]
 }
 
-MODEL_COLUMNS = [
-    'age',
-    'sex',
-    'cp',
-    'trestbps',
-    'chol',
-    'fbs',
-    'restecg',
-    'thalach',
-    'exang',
-    'oldpeak',
-    'slope',
-    'ca',
-    'thal'
-]
-
-SEX_POSSIBLE = ['Мужской', 'Женский']
-CP_POSSIBLE = ['Отсутствуют', 'Типичная стенокардия', 'Атипичная стенокардия', 'Боли, не связанные с стенокардией']
+MODEL_COLUMNS = ['sex', 'age', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
 
 @bp.route('/predict', methods=['POST'])
 def predict():
+    req_id = str(uuid.uuid4())
     request_data = request.get_json()
-    print(request_data)
+    current_app.logger.info(f'{req_id}: received request with data {request_data}')
 
-    is_input_correct, resp = _validate_input(request_data)
+    is_input_correct, resp = _validate_input(req_id, request_data)
     if not is_input_correct:
         return resp
-    
-    return render_template('heart/result.html')
 
-def _validate_input(req: dict) -> [bool, Response]:
+    current_app.logger.info(f'{req_id}: validation success')
+    prediction =_predict(req_id, request_data)
+    
+    return render_template('heart/result.html', risk=prediction)
+
+def _validate_input(req_id, req: dict) -> [bool, Response]:
     is_all_columns_in_request = _check_all_params_are_presented_in_req(req)
 
     if not is_all_columns_in_request:
+        
+        current_app.logger.info(f'{req_id}: validation failed: not columns in set')
+        
         return False, Response(
             render_template('heart/bad_params.html', text_error='Были отправлены не все параметры'),
             status=400,
@@ -120,6 +111,8 @@ def _validate_input(req: dict) -> [bool, Response]:
     
     is_all_fields_correct, err_msg = _validate_all_params(req)
     if not is_all_fields_correct:
+        current_app.logger.info(f'{req_id}: validation failed {err_msg}')
+
         return False, Response(
             render_template('heart/bad_params.html', text_error=err_msg),
             status=400
@@ -128,7 +121,7 @@ def _validate_input(req: dict) -> [bool, Response]:
     return True, None 
 
 def _check_all_params_are_presented_in_req(params: dict) -> bool:
-    for col in MODEL_COLUMNS:
+    for col in PARAMS_DICT.keys():
         if col not in params:
             return False
     
@@ -249,3 +242,34 @@ def _validate_float_vars(var: str, dict_header: str) -> (bool, str):
     except:
         return False, f'Параметр {var_str} должен быть дробным числом'
 
+def _predict(req_id: str, params: dict) -> int:
+    row = _create_row_for_predict(params)
+    current_app.logger.info(f'{req_id}: start predict for row = {row}')
+
+    result = _model_predict(row)
+    current_app.logger.info(f'{req_id}: prediction = {result}')
+
+    return result
+
+def _model_predict(row: list) -> int:
+    if row[1] >= 40:
+        return 1
+    
+    return 0
+
+def _create_row_for_predict(params: dict) -> list:
+    return [
+        PARAMS_DICT['sex'][1].index(params['sex']),
+        int(params['age']),
+        PARAMS_DICT['cp'][1].index(params['cp']),
+        int(params['trestbps']),
+        int(params['chol']),
+        int(params['fbs']),
+        PARAMS_DICT['restecg'][1].index(params['restecg']),
+        int(params['thalach']),
+        PARAMS_DICT['exang'][1].index(params['exang']),        
+        float(params['oldpeak']),
+        PARAMS_DICT['slope'][1].index(params['slope']),
+        PARAMS_DICT['ca'][1].index(params['ca']),
+        PARAMS_DICT['thal'][1].index(params['thal']),
+    ]

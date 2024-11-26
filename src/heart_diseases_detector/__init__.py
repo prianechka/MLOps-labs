@@ -2,7 +2,11 @@ import os
 
 import flask
 from flask_bootstrap import Bootstrap
+from flask_log_request_id import RequestID, RequestIDLogFilter
 from . import db, homepage, predict
+import logging
+
+LOG_REQUEST_ID_FRAMEWORK_SUPPORT=flask
 
 def create_app(cfg: flask.Config=None):
     app = flask.Flask(__name__, instance_relative_config=True)
@@ -21,15 +25,37 @@ def create_app(cfg: flask.Config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    app.logger = create_logger()
     
     db.init_app(app)
     app.register_blueprint(homepage.bp)
     app.register_blueprint(predict.bp)
+    RequestID(app)
 
     bootstrap = Bootstrap(app)
+    
     return app
 
 def make_config(app: flask.Flask):
     pass
 
+
+def create_logger() -> logging.Logger:
+    lg = logging.getLogger(__name__)
+    lg.setLevel(logging.DEBUG)
+    
+    # настройка обработчика и форматировщика для logger2
+    stream_handler = logging.StreamHandler()
+    file_handler = logging.FileHandler(f"{__name__}.log", mode='a')
+    
+    formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s: %(message)s")
+    file_handler.setFormatter(formatter)
+    stream_handler.setFormatter(formatter)
+    
+    # добавление обработчика к логгеру
+    lg.addHandler(file_handler)
+    lg.addHandler(stream_handler)
+
+    return lg
 

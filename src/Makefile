@@ -1,6 +1,8 @@
 start-env:
 	sudo python3 -m venv .venv
 	. .venv/bin/activate
+
+install-libs:
 	pip install -r requirements.txt
 
 init-db:

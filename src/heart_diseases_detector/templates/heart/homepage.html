@@ -19,7 +19,7 @@
         </div>
         <div class="mb-5" style="margin-bottom: 2rem;">
             <label for="age" style="font-size: large;">Возраст</label>
-            <input type="number" class="form-control form-control-lg" style="font-size: large;" id="age" min="0" max="100">
+            <input type="number" placeholder="40" class="form-control form-control-lg" style="font-size: large;" id="age" min="0" max="100">
         </div>
     </form>
 
@@ -119,6 +119,16 @@
             </select>
         </div>
     </form>
+
+    <script> 
+        document.getElementById('age').value='40';
+        document.getElementById('trestbps').value='132';
+        document.getElementById('chol').value='247';
+        document.getElementById('fbs').value='110';
+        document.getElementById('thalach').value='149';
+        document.getElementById('oldpeak').value='0.0';
+
+    </script>
 
     <script>
         function submitForm() {

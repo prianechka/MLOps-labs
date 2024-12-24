@@ -5,12 +5,15 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from heart_diseases_detector.db import get_db
 import uuid
 
+import pickle
+import catboost
+
 bp = Blueprint('predict', __name__, url_prefix='/')
 
 PARAMS_DICT = {
     'sex': [
         'Пол',
-        ['Мужской', 'Женский']
+        ['Женский', 'Мужской']
     ],
 
     'age': [
@@ -21,7 +24,7 @@ PARAMS_DICT = {
 
     'cp': [
         'Боль в груди',
-        ['Отсутствуют', 'Типичная стенокардия', 'Атипичная стенокардия', 'Боли, не связанные с стенокардией']
+        ['Типичная стенокардия', 'Атипичная стенокардия', 'Боли, не связанные с стенокардией', 'Отсутствуют']
     ],
 
     'trestbps': [
@@ -66,7 +69,7 @@ PARAMS_DICT = {
 
     'slope': [
         'Наклон ST-сегмента при максимальной физической нагрузке',
-        ['Ровный', 'Наклон вверх', 'Наклон вниз']
+        ['Наклон вверх', 'Ровный', 'Наклон вниз']
     ],
 
     'ca': [
@@ -246,30 +249,38 @@ def _predict(req_id: str, params: dict) -> int:
     row = _create_row_for_predict(params)
     current_app.logger.info(f'{req_id}: start predict for row = {row}')
 
-    result = _model_predict(row)
+    result = _model_predict(req_id, row)
     current_app.logger.info(f'{req_id}: prediction = {result}')
 
     return result
 
-def _model_predict(row: list) -> int:
-    if row[1] >= 40:
-        return 1
+def _model_predict(req_id: str, row: list) -> int:
     
-    return 0
+    model_file = open("/home/prianechka/Education/MLOps/MLOps-labs/src/heart_diseases_detector/model.pkl",'rb')
+    model = pickle.load(model_file)
+
+    result = model.predict(row)
+    current_app.logger.info(f'{req_id}: prediction = {result}')
+    if result > 0.5:
+        return 1
+    else:
+        return 0
+
+    # return result
 
 def _create_row_for_predict(params: dict) -> list:
     return [
-        PARAMS_DICT['sex'][1].index(params['sex']),
         int(params['age']),
+        PARAMS_DICT['sex'][1].index(params['sex']),
         PARAMS_DICT['cp'][1].index(params['cp']),
         int(params['trestbps']),
         int(params['chol']),
-        int(params['fbs']),
+        int(int(params['fbs']) > 120),
         PARAMS_DICT['restecg'][1].index(params['restecg']),
         int(params['thalach']),
         PARAMS_DICT['exang'][1].index(params['exang']),        
         float(params['oldpeak']),
         PARAMS_DICT['slope'][1].index(params['slope']),
         PARAMS_DICT['ca'][1].index(params['ca']),
-        PARAMS_DICT['thal'][1].index(params['thal']),
+        PARAMS_DICT['thal'][1].index(params['thal']) + 1,
     ]

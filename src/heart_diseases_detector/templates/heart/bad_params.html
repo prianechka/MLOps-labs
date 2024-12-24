@@ -1,0 +1,17 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Сердечные заболевания{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Форма заполнена с ошибками, подсчет невозможен</h1>
+    <h3 class="text-center mt-3">{{text_error}}</h3>
+
+    <div class="text-center" style="margin-top: 5rem;">
+        <form action="http://localhost:5000/" method="get">
+            <button type="submit" style="font-size: large" class="btn btn-primary">Вернуться в начало</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

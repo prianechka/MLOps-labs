@@ -1,0 +1,190 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Сердечные заболевания{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center">Узнайте, в группе ли вы риска сердечных заболеваний?</h1>
+    <h3 class="text-center mt-3">Введите свои показатели в формах ниже:</h3>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Пол</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="sex">
+                <option>Мужской</option>
+                <option>Женский</option>
+            </select>
+        </div>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="age" style="font-size: large;">Возраст</label>
+            <input type="number" placeholder="40" class="form-control form-control-lg" style="font-size: large;" id="age" min="0" max="100">
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="me-3" style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="resting-blood-pressure">Давление в покое (мм рт. ст.)</label>
+            <input style="font-size: large;"  type="number" class="form-control form-control-lg" id="trestbps" min="0" max="250">
+        </div>
+        <div style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="max-pulse">Максимальный пульс (уд/мин)</label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="thalach" min="0" max="200">
+        </div>
+    </div>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Тип болей в груди</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="cp">
+                <option>Отсутствуют</option>
+                <option>Типичная стенокардия</option>
+                <option>Атипичная стенокардия</option>
+                <option>Боли, не связанные с стенокардией</option>
+            </select>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="me-3" style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="resting-blood-pressure">Уровень сывороточного холестерина (в мг/дл) </label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="chol" min="0" max="500">
+        </div>
+        <div style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="max-pulse">Уровень сахара в крови натощак (в мг/дл)</label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="fbs" min="0" max="200">
+        </div>
+    </div>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Результаты ЭКГ в покое</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="restecg">
+                <option>В норме</option>
+                <option>Аномалия зубца ST-T</option>
+                <option>Гипертрофия левого желудочка</option>
+                <option>Другое</option>
+            </select>
+        </div>
+    </form>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Выявляется ли стенокардия при нагрузке</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="exang">
+                <option>Нет</option>
+                <option>Да</option>
+            </select>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="me-3" style="margin-bottom: 2rem;">
+            <label style="font-size: large;" for="resting-blood-pressure">Уровень депрессии ST-сегмента после физической нагрузки</label>
+            <input style="font-size: large;" type="number" class="form-control form-control-lg" id="oldpeak" min="0" max="500">
+        </div>
+    </div>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Наклон ST-сегмента при максимальной физической нагрузке</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="slope">
+                <option>Ровный</option>
+                <option>Наклон вверх</option>
+                <option>Наклон вниз</option>
+            </select>
+        </div>
+    </form>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Количество крупных сосудов, выявленных при рентгеноскопии</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="ca">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+        </div>
+    </form>
+
+    <form>
+        <div class="mb-5" style="margin-bottom: 2rem;">
+            <label for="gender" style="font-size: large">Тип талассемии</label>
+            <select class="form-select form-select-lg" style="font-size: large;" id="thal">
+                <option>Нормальный</option>
+                <option>Исправленный дефект</option>
+                <option>Обратимый дефект</option>
+            </select>
+        </div>
+    </form>
+
+    <script> 
+        document.getElementById('age').value='40';
+        document.getElementById('trestbps').value='132';
+        document.getElementById('chol').value='247';
+        document.getElementById('fbs').value='110';
+        document.getElementById('thalach').value='149';
+        document.getElementById('oldpeak').value='0.0';
+
+    </script>
+
+    <script>
+        function submitForm() {
+            // Получаем значения элементов формы
+            const age = document.getElementById('age').value;
+            const sex = document.getElementById('sex').value;
+            const cp = document.getElementById('cp').value;
+            const trestbps = document.getElementById('trestbps').value;
+            const chol = document.getElementById('chol').value;
+            const fbs = document.getElementById('fbs').value;
+            const restecg = document.getElementById('restecg').value;
+            const thalach = document.getElementById('thalach').value;
+            const exang = document.getElementById('exang').value;
+            const oldpeak = document.getElementById('oldpeak').value;
+            const slope = document.getElementById('slope').value;
+            const ca = document.getElementById('ca').value;
+            const thal = document.getElementById('thal').value;
+
+            
+            // Создаем объект с данными формы
+            const formData = {
+                age,
+                sex,
+                cp,
+                trestbps,
+                chol,
+                fbs,
+                restecg,
+                thalach,
+                exang,
+                oldpeak,
+                slope,
+                ca,
+                thal
+            };
+
+            fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then((response) => {
+                return response.text();
+            })
+            .then((html) => {
+                document.body.innerHTML = html     
+            });
+            
+            event.preventDefault();
+        }
+    </script>
+
+    <form method="post" onsubmit="submitForm(this)">
+        <button type="submit" style="font-size: large" class="btn btn-primary">Узнать результаты</button>
+    </form>
+</div>
+{% endblock %}

@@ -2,7 +2,7 @@ import functools
 
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, Response, current_app
 from werkzeug.security import check_password_hash, generate_password_hash
-from heart_diseases_detector.db import get_db
+from db import get_db
 import uuid
 
 import pickle
@@ -255,8 +255,7 @@ def _predict(req_id: str, params: dict) -> int:
     return result
 
 def _model_predict(req_id: str, row: list) -> int:
-    
-    model_file = open("/home/prianechka/Education/MLOps/MLOps-labs/src/heart_diseases_detector/model.pkl",'rb')
+    model_file = open("/opt/model.pkl",'rb')
     model = pickle.load(model_file)
 
     result = model.predict(row)

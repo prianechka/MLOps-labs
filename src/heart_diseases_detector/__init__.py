@@ -2,7 +2,9 @@ import os
 
 import flask
 from flask_bootstrap import Bootstrap
-from . import db, homepage, predict
+import db
+import homepage
+import predict
 import logging
 
 LOG_REQUEST_ID_FRAMEWORK_SUPPORT=flask
@@ -57,3 +59,6 @@ def create_logger() -> logging.Logger:
 
     return lg
 
+if __name__ == '__main__':
+    app = create_app()  
+    app.run(host='0.0.0.0', debug=True)  

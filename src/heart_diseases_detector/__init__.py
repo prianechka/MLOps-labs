@@ -2,8 +2,9 @@ import os
 
 import flask
 from flask_bootstrap import Bootstrap
-from flask_log_request_id import RequestID, RequestIDLogFilter
-from . import db, homepage, predict
+import db
+import homepage
+import predict
 import logging
 
 LOG_REQUEST_ID_FRAMEWORK_SUPPORT=flask
@@ -31,7 +32,6 @@ def create_app(cfg: flask.Config=None):
     db.init_app(app)
     app.register_blueprint(homepage.bp)
     app.register_blueprint(predict.bp)
-    RequestID(app)
 
     bootstrap = Bootstrap(app)
     
@@ -59,3 +59,6 @@ def create_logger() -> logging.Logger:
 
     return lg
 
+if __name__ == '__main__':
+    app = create_app()  
+    app.run(host='0.0.0.0', debug=True)  

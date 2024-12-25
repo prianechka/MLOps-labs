@@ -10,3 +10,11 @@ init-db:
 
 run-debug:
 	flask --app heart_diseases_detector run --debug
+
+build-run-docker:
+	docker compose down --volumes
+	BUILDKIT_PROGRESS=plain docker compose up --build -d
+
+run-docker:
+	docker compose down --volumes
+	docker compose up
